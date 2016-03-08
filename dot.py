@@ -1,18 +1,21 @@
 #!/usr/bin/env python
 #dot class
 
-import pygame, sys, tkinter, glob #twisted for networking 
+import pygame, sys, glob #twisted for networking 
 from pygame.locals import *
-from tkinter import *
+
 from constants import *
 
-screen = pygame.display.set_mode((WIDTH, LENGTH))
-
 class Dot: 
+
+	pygame.init()
+
+	screen = pygame.display.set_mode((WIDTH, HEIGHT))
+	pygame.display.set_caption('2Dots')
+	screen.fill(BACKGD)
+
 	def __init__(self, x, y):
-		print ("check pt 4")
-		pygame.display.set_caption('2Dots')
-		screen.fill(BACKGD)
+		#screen
 
 		print ("check pt 5")
 
@@ -21,19 +24,18 @@ class Dot:
 		self.x = x
 		self.y = y
 
-		self.dot1 = pygame.draw.circle(screen, DOT_1, (self.x, self.y), 20, 0)
-		self.dot2 = pygame.draw.circle(screen, DOT_2, (self.x, self.y + 100), 20, 0)
-		self.animation(False)
+		pygame.draw.circle(Dot.screen, DOT_1, (self.x, self.y), RADIUS, 0)
 	 	#image animation update
 
-	def animation(self, jump):
-		if jump == False:
-			#vertical fall
-			self.x += SPEED
-			self.y += SPEED
-			#pygame.draw.circle(screen, DOT_1, (self.x, self.y), 20, 0)
-		elif jump == True:
-			self.x += SPEED
-			self.y -= (SPEED * 2)
+	def update(self, x, y):
+		
+		#clear screen
+		Dot.screen.fill(BACKGD)		
 
-		self.dot1.move(self.x, self.y)
+		self.x = x
+		self.y = y
+
+		#pygame.display.update(self.dot)
+		pygame.draw.circle(Dot.screen, DOT_1, (self.x, self.y), RADIUS, 0)
+
+		screen = pygame.display.flip()

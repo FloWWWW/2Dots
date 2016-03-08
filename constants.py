@@ -1,6 +1,17 @@
-WIDTH = 1200
-LENGTH = 800
+#!/usr/bin/env python
 
+import pygame, sys, glob #twisted for networking 
+from pygame.locals import *
+
+pygame.init()
+
+infoObject = pygame.display.Info()
+
+WIDTH = infoObject.current_w
+HEIGHT = infoObject.current_h
+
+#dot
+RADIUS = 20
 SPEED = 10
 
 #color: http://www.colorcombos.com/color-schemes/125/ColorCombo125.html
