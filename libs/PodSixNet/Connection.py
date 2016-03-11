@@ -7,8 +7,7 @@ This module contains two components: a singleton called 'connection' and a class
 
 Subclass ConnectionListener in order to have an object that will receive network events. For example, you might have a GUI element which is a label saying how many players there are online. You would declare it like 'class NumPlayersLabel(ConnectionListener, ...):' Later you'd instantitate it 'n = NumPlayersLabel()' and then somewhere in your loop you'd have 'n.Pump()' which asks the connection singleton if there are any new messages from the network, and calls the 'Network_' callbacks for each bit of new data from the server. So you'd implement a method like "def Network_players(self, data):" which would be called whenever a message from the server arrived which looked like {"action": "players", "number": 5}.
 """
-
-from EndPoint import EndPoint
+from EndPoint import *
 
 connection = EndPoint()
 
@@ -37,15 +36,15 @@ if __name__ == "__main__":
 	from sys import exit
 	class ConnectionTest(ConnectionListener):
 		def Network(self, data):
-			print "Network:", data
+			print ("Network:", data)
 		
 		def Network_error(self, error):
-			print "error:", error['error']
-			print "Did you start a server?"
+			print ("error:", error['error'])
+			print ("Did you start a server?")
 			exit(-1)
 		
 		def Network_connected(self, data):
-			print "connection test Connected"
+			print ("connection test Connected")
 	
 	c = ConnectionTest()
 	

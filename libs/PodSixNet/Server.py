@@ -54,7 +54,7 @@ if __name__ == "__main__":
 			class ServerChannel(Channel):
 				def Network_hello(self, data):
 					print "*Server* ran test method for 'hello' action"
-					print "*Server* received:", data
+					print ("*Server* received:", data)
 					self._server.received = data
 			
 			class EndPointChannel(Channel):
@@ -64,7 +64,7 @@ if __name__ == "__main__":
 				
 				def Network_connected(self, data):
 					self.connected = True
-					print "*EndPoint* Network_connected(", data, ")"
+					print ("*EndPoint* Network_connected(", data, ")")
 					print "*EndPoint* initiating send"
 					self.Send(ServerTestCase.testdata)
 			
@@ -73,7 +73,7 @@ if __name__ == "__main__":
 				received = None
 				def Connected(self, channel, addr):
 					self.connected = True
-					print "*Server* Connected() ", channel, "connected on", addr
+					print ("*Server* Connected() ", channel, "connected on", addr)
 			
 			self.server = TestServer(channelClass=ServerChannel)
 			

@@ -1,41 +1,47 @@
 #!/usr/bin/env python
-#dot class
+# dot class
 
-import pygame, sys, glob #twisted for networking 
-from pygame.locals import *
+import pygame
+import sys
+import glob  # twisted for networking
+
+from pygame import *
+from PodSixNet.Connection import ConnectionListener, connection
+from time import sleep
 
 from constants import *
 
-class Dot: 
 
-	pygame.init()
+class Dot(ConnectionListener):  # class dot extend connectionListener
 
-	screen = pygame.display.set_mode((WIDTH, HEIGHT))
-	pygame.display.set_caption('2Dots')
-	screen.fill(BACKGD)
+    pygame.init()
 
-	def __init__(self, x, y):
-		#screen
+    screen = pygame.display.set_mode((WIDTH, HEIGHT))
+    pygame.display.set_caption('2Dots')
+    screen.fill(BACKGD)
 
-		print ("check pt 5")
+    def __init__(self, x, y):
+        # screen
+        print ("check pt 5")
 
-		self.speed = SPEED
+        self.speed = SPEED
+        self.x = x
+        self.y = y
+        pygame.draw.circle(Dot.screen, DOT_1, (self.x, self.y), RADIUS, 0)
+        self.Connect()
 
-		self.x = x
-		self.y = y
+    def update(self, x, y):
+        # server pump
+        connection.Pump()
+        self.Pump()
 
-		pygame.draw.circle(Dot.screen, DOT_1, (self.x, self.y), RADIUS, 0)
-	 	#image animation update
+        # clear screen
+        Dot.screen.fill(BACKGD)
 
-	def update(self, x, y):
-		
-		#clear screen
-		Dot.screen.fill(BACKGD)		
+        self.x = x
+        self.y = y
 
-		self.x = x
-		self.y = y
+        # pygame.display.update(self.dot)
+        pygame.draw.circle(Dot.screen, DOT_1, (self.x, self.y), RADIUS, 0)
 
-		#pygame.display.update(self.dot)
-		pygame.draw.circle(Dot.screen, DOT_1, (self.x, self.y), RADIUS, 0)
-
-		screen = pygame.display.flip()
+        screen = pygame.display.flip()

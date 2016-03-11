@@ -1,9 +1,9 @@
 #!/usr/bin/env python
 
 import pygame, sys, glob #twisted for networking 
-from pygame.locals import *
+from pygame import *
 
-from dot import *
+from dot import Dot
 from constants import *
 
 pygame.init()
@@ -14,7 +14,6 @@ y = HEIGHT // 2 - RADIUS
 dot1 = Dot(x, y)
 
 clock = pygame.time.Clock() #fps
-
 
 # Event loop
 while True:

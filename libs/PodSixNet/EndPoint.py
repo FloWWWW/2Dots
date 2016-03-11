@@ -77,7 +77,7 @@ if __name__ == "__main__":
 					self.result = ""
 				
 				def Error(self, error):
-					print "Received error message:", error
+					print ("Received error message:", error)
 					self.result = error
 				
 				def Test(self):
@@ -97,7 +97,7 @@ if __name__ == "__main__":
 		
 		def tearDown(self):
 			del self.endpoint_bad
-			print "FailEndPointTestCase complete"
+			print ("FailEndPointTestCase complete")
 	
 	from Server import Server
 	class EndPointTestCase(unittest.TestCase):
@@ -112,8 +112,8 @@ if __name__ == "__main__":
 			self.lengths = [len(data['data']) for data in self.outgoing]
 			
 			print
-			print "Trying successful endpoint"
-			print "--------------------------"
+			print ("Trying successful endpoint")
+			print ("--------------------------")
 			class ServerChannel(Channel):
 				def Network_hello(self, data):
 					print "*Server* received:", data
@@ -132,7 +132,7 @@ if __name__ == "__main__":
 				def Network_gotit(self, data):
 					self.received.append(data)
 					self.count += 1
-					print "gotit:", data
+					print ("gotit:", data)
 			
 			class TestServer(Server):
 				connected = False
@@ -150,7 +150,7 @@ if __name__ == "__main__":
 			for o in self.outgoing:
 				self.endpoint.Send(o)
 			
-			print "polling for half a second"
+			print ("polling for half a second")
 			for x in range(50):
 				self.server.Pump()
 				self.endpoint.Pump()
@@ -180,7 +180,7 @@ if __name__ == "__main__":
 		def tearDown(self):
 			del self.server
 			del self.endpoint
-			print "EndPointTestCase complete"
+			print ("EndPointTestCase complete")
 	
 	unittest.main()
 	
