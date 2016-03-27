@@ -1,14 +1,7 @@
 #!/usr/bin/env python
 
-import pygame, sys, glob #twisted for networking 
-from pygame.locals import *
-
-pygame.init()
-
-infoObject = pygame.display.Info()
-
-WIDTH = infoObject.current_w
-HEIGHT = infoObject.current_h
+WIDTH = 1200
+HEIGHT = 800
 
 #dot
 RADIUS = 20
