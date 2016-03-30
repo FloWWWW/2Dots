@@ -66,7 +66,7 @@ class Dot(ConnectionListener):  # class dot extend connectionListener
         #     self.othermarker = self.greenplayer
 
     def update(self, x, y):
-        # server pump
+        # look for new events/messages
         connection.Pump()
         self.Pump()
 
@@ -81,9 +81,24 @@ class Dot(ConnectionListener):  # class dot extend connectionListener
 
         #server communication n send coordinates: data
         self.Send(
-            {"action": "place", "x": x, "y": y, "gameid": self.gameid, "num": self.num})
+            {'action': "place", 
+             'x': self.x,
+             'y': self.y, 
+             'gameid': self.gameid, 
+             'num': self.num})
 
         screen = pygame.display.flip()
+
+    #get data from server
+    def Network_place(self, data):
+        #get attributes
+        x = data["x"]
+        y = data["y"]
+
+        #horizontal or vertical
+        pygame.draw.circle(Dot.screen, DOT_1, (x, y), RADIUS, 0)
+        screen = pygame.display.flip()
+
 
     def Network_startgame(self, data):
         self.running = True

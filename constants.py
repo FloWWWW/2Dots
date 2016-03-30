@@ -11,3 +11,11 @@ SPEED = 10
 BACKGD = (217, 226, 225)
 DOT_1 = (223, 148, 150)
 DOT_2 = (114, 123, 132)
+
+#data
+data = {'gameid': None, 
+        'player': None,
+        'num': None,
+        'action': None,
+        'x': None,
+        'y': None};

@@ -10,7 +10,6 @@ from constants import *
 pygame.init()
 
 #screen canvas
-
 infoObject = pygame.display.Info()
 
 WIDTH = infoObject.current_w
@@ -19,12 +18,6 @@ HEIGHT = infoObject.current_h
 x = 50
 y = HEIGHT // 2 - RADIUS
 
-data = {'gameid': None, 
-		'player': None,
-		'num': None,
-		'action': None,
-		'x': None,
-		'y': None};
 
 print "RUNNING PYGAME"
 dot1 = Dot(x, y)

@@ -26,8 +26,7 @@ class ClientChannel(PodSixNet.Channel.Channel):
 
     def Network_place(self, data):
         # deconsolidate all of the data from the dictionary
-        # reads the send data
-     
+        # reads the send data     
         # x of dot
         x = data["x"]
      
@@ -41,11 +40,13 @@ class ClientChannel(PodSixNet.Channel.Channel):
         self.gameid = data["gameid"]
      
         # tells server to place line
-        self._server.placeLine(x, y, data, self.gameid, num)
+        self._server.moveBall(x, y, data, self.gameid, num)
+        print "server: place"
 
 
 class DotsServer(PodSixNet.Server.Server):
     # see take in various arguments
+    channelClass = ClientChannel
 
     def __init__(self, *args, **kwargs):
         # call the PodSixNet class initializer n pass arguments 
@@ -58,8 +59,6 @@ class DotsServer(PodSixNet.Server.Server):
         # created
         self.currentIndex = 0
 
-        channelClass = ClientChannel
-
     def Connected(self, channel, addr):
         print 'new connection:', channel
 
@@ -67,22 +66,30 @@ class DotsServer(PodSixNet.Server.Server):
             # increment existing game index
             self.currentIndex += 1
             channel.gameid = self.currentIndex
+
             # creates a new game and puts it in the queue
             # so that the next time a client connects, they are assigned to that game
             self.queue = Game(channel, self.currentIndex)
+            print "queue 1"
+
         else:
             channel.gameid = self.currentIndex
             self.queue.player1 = channel
 
             # sends a start game message to both players
-            self.queue.player0.Send(
-                {"action": "startgame", "player": 0, "gameid": self.queue.gameid})
-            self.queue.player1.Send(
-                {"action": "startgame", "player": 1, "gameid": self.queue.gameid})
+            self.queue.player0.Send({"action": "startgame", "player": 0, "gameid": self.queue.gameid})
+            self.queue.player1.Send({"action": "startgame", "player": 1, "gameid": self.queue.gameid})
             
             self.games.append(self.queue)
             # clear queue
             self.queue = None
+            print "queue 2"
+
+    def moveBall(self, x, y, data, gameid, num):
+        game = [i for i in self.games if i.gameid == gameid]
+        if len(game) == 1:
+            game[0].moveBall(x, y, data, num)
+
 
 
 # keep track of state of the game, update to each client
@@ -90,8 +97,8 @@ class Game:
 
     def __init__(self, player0, currentIndex):
         # init coordinates
-        self.x_0 = 0 + RADIUS
-        self.y_0 = HEIGHT // 2
+        self.x_0 = None
+        self.y_0 = None
 
         # draw
         # TODO creates new game when first client connects
@@ -100,16 +107,19 @@ class Game:
         # initialize the players
         self.player0 = player0
         self.player1 = None
+
         # gameid of game
         self.gameid = currentIndex
+        print 'server game: init'
 
-    def ball(self, x, y, data, gameid, num):
+    def moveBall(self, x, y, data, num):
         # updates the ball coordinates
-        self.x_0 = x
+        self.x_0= x
         self.y_0 = y
 
         self.player0.Send(data)
         self.player1.Send(data)
+        print 'server game: ball'
 
 print "<<<<<<<<<<<<<<<STARTING SERVER ON LOCALHOST>>>>>>>>>>>>>>>>>"
 
@@ -123,9 +133,11 @@ if not address:
 else:
     host, port = address.split(":")
 
+#init dots server
 dotsServe = DotsServer(localaddr = (host, int(port)))
 
 while True:
     # called once per game loop
     dotsServe.Pump()
+
     sleep(0.01)
