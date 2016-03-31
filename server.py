@@ -39,7 +39,7 @@ class ClientChannel(PodSixNet.Channel.Channel):
         # id of game given by server at start of game
         self.gameid = data["gameid"]
      
-        # tells server to place line
+        # tell server to move ball coordinates
         self._server.moveBall(x, y, data, self.gameid, num)
         print "server: place"
 
@@ -66,6 +66,7 @@ class DotsServer(PodSixNet.Server.Server):
             # increment existing game index
             self.currentIndex += 1
             channel.gameid = self.currentIndex
+            data['gameid'] = self.currentIndex
 
             # creates a new game and puts it in the queue
             # so that the next time a client connects, they are assigned to that game
@@ -91,7 +92,6 @@ class DotsServer(PodSixNet.Server.Server):
             game[0].moveBall(x, y, data, num)
 
 
-
 # keep track of state of the game, update to each client
 class Game:
 
@@ -114,14 +114,17 @@ class Game:
 
     def moveBall(self, x, y, data, num):
         # updates the ball coordinates
-        self.x_0= x
+        self.x_0 = x
         self.y_0 = y
+
+        data['x'] = self.x_0
+        data['y'] = self.y_0
 
         self.player0.Send(data)
         self.player1.Send(data)
         print 'server game: ball'
 
-print "<<<<<<<<<<<<<<<STARTING SERVER ON LOCALHOST>>>>>>>>>>>>>>>>>"
+print "<<<<<<<<<<<<<<<STARTING SERVER>>>>>>>>>>>>>>>>>"
 
 # dotsServe = DotsServer()
 

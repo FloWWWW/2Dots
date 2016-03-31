@@ -45,6 +45,7 @@ while True:
 		elif event.type == KEYDOWN and event.key == K_SPACE:
 			y -= (SPEED * 10)
 			dot1.update(x, y)
+			#dot1.Network_place(data)
 	# else:
 	# 	x = data['x']
 	# 	y = data['y']
@@ -52,10 +53,13 @@ while True:
 		
 	# fall	
 	y += SPEED
+	Dot.screen.fill(BACKGD)
 	dot1.update(x, y)
+	dot1.Network_place(data)
+
 
 	#out of bound
 	if y >= HEIGHT or y <= 0: #death
 		y = HEIGHT//2
 
-	clock.tick(30)
+	clock.tick(3)

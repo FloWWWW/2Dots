@@ -8,6 +8,7 @@ import glob  # twisted for networking
 from pygame import *
 from PodSixNet.Connection import ConnectionListener, connection
 from time import sleep
+import random
 
 from constants import *
 
@@ -71,33 +72,33 @@ class Dot(ConnectionListener):  # class dot extend connectionListener
         self.Pump()
 
         # clear screen
-        Dot.screen.fill(BACKGD)
-
         self.x = x
         self.y = y
 
+        data['x'] = self.x
+        data['y'] = self.y
+        data['gameid'] = self.gameid
+        data['num'] = self.num
         # pygame.display.update(self.dot)
         pygame.draw.circle(Dot.screen, DOT_1, (self.x, self.y), RADIUS, 0)
 
         #server communication n send coordinates: data
-        self.Send(
-            {'action': "place", 
-             'x': self.x,
-             'y': self.y, 
-             'gameid': self.gameid, 
-             'num': self.num})
+        self.Send({'action': "place",'x': self.x,'y': self.y, 'gameid': self.gameid, 'num': self.num})
 
         screen = pygame.display.flip()
 
     #get data from server
     def Network_place(self, data):
-        #get attributes
-        x = data["x"]
-        y = data["y"]
+        # get attributes from server
+        try:
+            x = int(data['x'])
+            y = int(data['y'])
 
-        #horizontal or vertical
-        pygame.draw.circle(Dot.screen, DOT_1, (x, y), RADIUS, 0)
-        screen = pygame.display.flip()
+            # updates dot accordingly
+            pygame.draw.circle(Dot.screen, DOT_2, (x, y), RADIUS, 0)
+
+        except TypeError:
+            print "data x", data['x']
 
 
     def Network_startgame(self, data):
