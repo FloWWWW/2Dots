@@ -44,8 +44,8 @@ while True:
 		#key down, jump
 		elif event.type == KEYDOWN and event.key == K_SPACE:
 			y -= (SPEED * 10)
+			Dot.screen.fill(BACKGD)
 			dot1.update(x, y)
-			#dot1.Network_place(data)
 	# else:
 	# 	x = data['x']
 	# 	y = data['y']

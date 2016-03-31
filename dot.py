@@ -81,11 +81,11 @@ class Dot(ConnectionListener):  # class dot extend connectionListener
         data['num'] = self.num
         # pygame.display.update(self.dot)
         pygame.draw.circle(Dot.screen, DOT_1, (self.x, self.y), RADIUS, 0)
+        print "local update"
+        screen = pygame.display.flip()
 
         #server communication n send coordinates: data
         self.Send({'action': "place",'x': self.x,'y': self.y, 'gameid': self.gameid, 'num': self.num})
-
-        screen = pygame.display.flip()
 
     #get data from server
     def Network_place(self, data):
@@ -96,6 +96,8 @@ class Dot(ConnectionListener):  # class dot extend connectionListener
 
             # updates dot accordingly
             pygame.draw.circle(Dot.screen, DOT_2, (x, y), RADIUS, 0)
+
+            print "server update"
 
         except TypeError:
             print "data x", data['x']

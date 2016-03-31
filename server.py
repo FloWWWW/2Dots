@@ -1,5 +1,4 @@
 #!/usr/bin/env python
-import logging
 # server init checkup
 # run a PodSixNet custom server on a specific port
 # then run the client to communicate with the server through that port.
@@ -27,21 +26,15 @@ class ClientChannel(PodSixNet.Channel.Channel):
     def Network_place(self, data):
         # deconsolidate all of the data from the dictionary
         # reads the send data     
-        # x of dot
         x = data["x"]
-     
-        # y of dot
         y = data["y"]
      
         # player number (1 or 0)
         num = data["num"]
-     
-        # id of game given by server at start of game
         self.gameid = data["gameid"]
      
         # tell server to move ball coordinates
         self._server.moveBall(x, y, data, self.gameid, num)
-        print "server: place"
 
 
 class DotsServer(PodSixNet.Server.Server):
@@ -71,7 +64,6 @@ class DotsServer(PodSixNet.Server.Server):
             # creates a new game and puts it in the queue
             # so that the next time a client connects, they are assigned to that game
             self.queue = Game(channel, self.currentIndex)
-            print "queue 1"
 
         else:
             channel.gameid = self.currentIndex
@@ -84,10 +76,12 @@ class DotsServer(PodSixNet.Server.Server):
             self.games.append(self.queue)
             # clear queue
             self.queue = None
-            print "queue 2"
 
     def moveBall(self, x, y, data, gameid, num):
+        #finds the one with the same gameid as the client
         game = [i for i in self.games if i.gameid == gameid]
+        print self.games
+        #client
         if len(game) == 1:
             game[0].moveBall(x, y, data, num)
 
@@ -102,15 +96,12 @@ class Game:
 
         # draw
         # TODO creates new game when first client connects
-        self.owner = False
-
         # initialize the players
         self.player0 = player0
         self.player1 = None
 
         # gameid of game
         self.gameid = currentIndex
-        print 'server game: init'
 
     def moveBall(self, x, y, data, num):
         # updates the ball coordinates
@@ -122,7 +113,6 @@ class Game:
 
         self.player0.Send(data)
         self.player1.Send(data)
-        print 'server game: ball'
 
 print "<<<<<<<<<<<<<<<STARTING SERVER>>>>>>>>>>>>>>>>>"
 
@@ -144,3 +134,4 @@ while True:
     dotsServe.Pump()
 
     sleep(0.01)
+
