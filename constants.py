@@ -13,9 +13,9 @@ DOT_1 = (223, 148, 150)
 DOT_2 = (114, 123, 132)
 
 #data
-data = {'gameid': None, 
-        'player': None,
-        'num': None,
-        'action': None,
+data = {'action': None, 
         'x': None,
-        'y': None};
+        'y': None,
+        'gameid': 0,
+        'player': None,
+        'num': 0};

@@ -29,8 +29,8 @@ class Dot(ConnectionListener):  # class dot extend connectionListener
 
         pygame.draw.circle(Dot.screen, DOT_1, (self.x, self.y), RADIUS, 0)
 
-        self.gameid = None
-        self.num = None
+        self.gameid = 0
+        self.num = 0
 
         #self.Connect()
         #manually select server
@@ -75,6 +75,9 @@ class Dot(ConnectionListener):  # class dot extend connectionListener
         self.x = x
         self.y = y
 
+        # self.gameid += 1
+        # self.num += 1
+
         data['x'] = self.x
         data['y'] = self.y
         data['gameid'] = self.gameid
@@ -82,7 +85,6 @@ class Dot(ConnectionListener):  # class dot extend connectionListener
         # pygame.display.update(self.dot)
         pygame.draw.circle(Dot.screen, DOT_1, (self.x, self.y), RADIUS, 0)
         print "local update"
-        screen = pygame.display.flip()
 
         #server communication n send coordinates: data
         self.Send({'action': "place",'x': self.x,'y': self.y, 'gameid': self.gameid, 'num': self.num})
@@ -93,6 +95,9 @@ class Dot(ConnectionListener):  # class dot extend connectionListener
         try:
             x = int(data['x'])
             y = int(data['y'])
+            
+            self.gameid = int(data['gameid'])
+            self.num = int(data['num'])
 
             # updates dot accordingly
             pygame.draw.circle(Dot.screen, DOT_2, (x, y), RADIUS, 0)

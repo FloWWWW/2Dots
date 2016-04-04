@@ -55,11 +55,12 @@ class DotsServer(PodSixNet.Server.Server):
     def Connected(self, channel, addr):
         print 'new connection:', channel
 
+        self.currentIndex += 1
+        channel.gameid = self.currentIndex
+        data['gameid'] = self.currentIndex
+
         if self.queue == None:
             # increment existing game index
-            self.currentIndex += 1
-            channel.gameid = self.currentIndex
-            data['gameid'] = self.currentIndex
 
             # creates a new game and puts it in the queue
             # so that the next time a client connects, they are assigned to that game
@@ -108,8 +109,8 @@ class Game:
         self.x_0 = x
         self.y_0 = y
 
-        data['x'] = self.x_0
-        data['y'] = self.y_0
+        # data['x'] = self.x_0
+        # data['y'] = self.y_0
 
         self.player0.Send(data)
         self.player1.Send(data)
