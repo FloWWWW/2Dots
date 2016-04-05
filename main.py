@@ -45,21 +45,14 @@ while True:
 		elif event.type == KEYDOWN and event.key == K_SPACE:
 			y -= (SPEED * 10)
 			Dot.screen.fill(BACKGD)
-			dot1.Network_place(data)
+			# dot1.Network_place(data)
 			dot1.update(x, y)	
 			screen = pygame.display.flip()
-
-
-
-	# else:
-	# 	x = data['x']
-	# 	y = data['y']
-	# 	dot1.update(x, y)
 		
 	# fall	
 	y += SPEED
 	Dot.screen.fill(BACKGD)
-	dot1.Network_place(data)
+	# dot1.Network_place(data)
 	dot1.update(x, y)
 	screen = pygame.display.flip()
 
@@ -69,3 +62,8 @@ while True:
 		y = HEIGHT//2
 
 	clock.tick(3)
+
+	# if dot1.update() == 1:
+ #    	break
+
+dot1.finished()
